@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,6 +90,21 @@ public class ApiController {
 		BMI bmi=new BMI(h,w,bmiValue);
 		//ok HTTP狀態碼:200
 		return ResponseEntity.ok(ApiResponse.success("計算成功", bmi));
+	}
+	/**
+	 * 6.同名多筆資料
+	 * 路徑:/json/age?age=17&age=60&age=15
+	 * 網址:http://localhost:8080/api/json/age?age=17&age=60&age=15
+	 * 請計算出平均年齡
+	 */
+	@GetMapping(value = "/json/age",produces = "text/plain;charset=utf-8")
+	public ResponseEntity<ApiResponse<Object>> getAverage(@RequestParam(name="age",required = false) List<Integer> ages) {
+		if(ages==null||ages.size()==0) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail("請輸入年齡"));
+		}
+		double avg=ages.stream().mapToInt(Integer::valueOf).average().orElseGet(()->0);
+		Object data=Map.of("年齡",ages,"平均年齡",String.format("%.1f", avg));
+		return ResponseEntity.ok(ApiResponse.success("計算成功", data));
 	}
 
 }
