@@ -102,6 +102,9 @@ public class ApiController {
 		if(ages==null||ages.size()==0) {
 			return ResponseEntity.badRequest().body(ApiResponse.fail("請輸入年齡"));
 		}
+		if(ages.stream().anyMatch(s->s<0)) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail("年齡只能是正值"));
+		}
 		double avg=ages.stream().mapToInt(Integer::valueOf).average().orElseGet(()->0);
 		Object data=Map.of("年齡",ages,"平均年齡",String.format("%.1f", avg));
 		return ResponseEntity.ok(ApiResponse.success("計算成功", data));
@@ -111,6 +114,12 @@ public class ApiController {
 	public ResponseEntity<ApiResponse<Object>> scoreAverage(@RequestParam(name="score",required = false) List<Integer> scores){
 		if(scores==null||scores.size()==0) {
 			return ResponseEntity.badRequest().body(ApiResponse.fail("請輸入分數"));
+		}
+		if(scores.stream().anyMatch(s->s<0)) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail("分數只能是正值"));
+		}
+		if(scores.stream().anyMatch(s->s>100)) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail("分數不能超過100"));
 		}
 		double ave=scores.stream().mapToInt(Integer::valueOf).average().orElseGet(()->0);
 		int sum=scores.stream().mapToInt(Integer::valueOf).sum();
