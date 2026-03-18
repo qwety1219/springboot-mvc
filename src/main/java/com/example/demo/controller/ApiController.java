@@ -97,7 +97,7 @@ public class ApiController {
 	 * 網址:http://localhost:8080/api/json/age?age=17&age=60&age=15
 	 * 請計算出平均年齡
 	 */
-	@GetMapping(value = "/json/age",produces = "text/plain;charset=utf-8")
+	@GetMapping(value = "/json/age")
 	public ResponseEntity<ApiResponse<Object>> getAverage(@RequestParam(name="age",required = false) List<Integer> ages) {
 		if(ages==null||ages.size()==0) {
 			return ResponseEntity.badRequest().body(ApiResponse.fail("請輸入年齡"));
@@ -105,6 +105,20 @@ public class ApiController {
 		double avg=ages.stream().mapToInt(Integer::valueOf).average().orElseGet(()->0);
 		Object data=Map.of("年齡",ages,"平均年齡",String.format("%.1f", avg));
 		return ResponseEntity.ok(ApiResponse.success("計算成功", data));
+	}
+	//Lab練習
+	@GetMapping(value="/json/score")
+	public ResponseEntity<ApiResponse<Object>> scoreAverage(@RequestParam(name="score",required = false) List<Integer> scores){
+		if(scores==null||scores.size()==0) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail("請輸入分數"));
+		}
+		double ave=scores.stream().mapToInt(Integer::valueOf).average().orElseGet(()->0);
+		int sum=scores.stream().mapToInt(Integer::valueOf).sum();
+		int max=scores.stream().mapToInt(Integer::valueOf).max().orElseGet(()->0);
+		int min=scores.stream().mapToInt(Integer::valueOf).min().orElseGet(()->0);
+		Object data=Map.of("最高分",max,"最低分",min,"平均",String.format("%.2f", ave),"總分",sum);
+		return ResponseEntity.ok(ApiResponse.success("計算成功", data));
+		
 	}
 
 }
