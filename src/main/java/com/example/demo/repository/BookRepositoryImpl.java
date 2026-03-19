@@ -49,6 +49,7 @@ public abstract  class BookRepositoryImpl implements BookRepository{
 		}
 		//得到要修改的書
 		Book orginalBook=optBook.get();
+		//更新欄位資料
 		orginalBook.setAmount(book.getAmount());
 		orginalBook.setName(book.getName());
 		orginalBook.setPrice(book.getPrice());
