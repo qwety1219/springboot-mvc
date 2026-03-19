@@ -151,7 +151,7 @@ public class ApiController {
 	 */
 	@GetMapping(value ="/json/book2")
 	public ResponseEntity<ApiResponse<Book>> getBookInfo2(Book book){
-		book.setId(1);
+		book.setId(1);//設定id
 		System.out.printf("bookMap=%s%n",book);
 		return ResponseEntity.ok(ApiResponse.success("成功", book));
 	}
