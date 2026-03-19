@@ -199,7 +199,7 @@ public class ApiController {
 			return ResponseEntity.badRequest().body(ApiResponse.fail("查無此書"));
 		}
 		Book book=optBook.get();
-		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));		
+		return ResponseEntity.ok(ApiResponse.success("查詢成功,"+(pub?"出刊":"停刊"), book));		
 	}
 
 }
