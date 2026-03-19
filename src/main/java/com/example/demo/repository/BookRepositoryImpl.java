@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.model.Book;
 //專門負責資料存取的元件,Spring會自動建立並管理該物件
 @Repository
-public abstract  class BookRepositoryImpl implements BookRepository{
+public class BookRepositoryImpl implements BookRepository{
 	//InMemory版
 	private List<Book> books=new CopyOnWriteArrayList<>();
 	//初始資料有四本書
