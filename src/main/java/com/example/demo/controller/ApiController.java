@@ -16,7 +16,6 @@ import com.example.demo.model.BMI;
 import com.example.demo.model.Book;
 import com.example.demo.response.ApiResponse;
 
-import jakarta.websocket.server.PathParam;
 //可以省去撰寫@ResponseBody
 @RestController
 @RequestMapping("/api")
@@ -186,6 +185,21 @@ public class ApiController {
 		}
 		Book book=optBook.get();//取得書籍物件
 		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));
+	}
+	//Lab
+	@GetMapping(value = "/json/book/pub/{pub}")
+	public ResponseEntity<ApiResponse<Book>> getBookInfo4(@PathVariable Boolean pub){
+		List<Book> books=List.of(
+				new Book(1,"小叮噹",12.5,20,true),
+				new Book(2,"老夫子",10.5,30,true),
+				new Book(3,"好小子",9.5,40,true),
+				new Book(4,"新樂園",14.5,50,false));
+		Optional<Book> optBook=books.stream().filter(book->book.getPub().equals(pub)).findFirst();
+		if(optBook.isEmpty()) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail("查無此書"));
+		}
+		Book book=optBook.get();
+		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));		
 	}
 
 }
