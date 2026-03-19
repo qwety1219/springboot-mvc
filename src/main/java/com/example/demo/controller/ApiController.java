@@ -3,9 +3,11 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.BMI;
 import com.example.demo.model.Book;
 import com.example.demo.response.ApiResponse;
+
+import jakarta.websocket.server.PathParam;
 //可以省去撰寫@ResponseBody
 @RestController
 @RequestMapping("/api")
@@ -154,6 +158,34 @@ public class ApiController {
 		book.setId(1);//設定id
 		System.out.printf("bookMap=%s%n",book);
 		return ResponseEntity.ok(ApiResponse.success("成功", book));
+	}
+	/**
+	 * 10.路徑參數
+	 * 早期設計風格
+	 * 路徑:/json/book?id=1,得到id=1的書
+	 * 路徑:/json/book?id=2,得到id=2的書
+	 * 現代設計風格(REST)
+	 * 路徑:/json/book/1,得到id=1的書
+	 * 路徑:/json/book/2,得到id=2的書
+	 * 網址:http://localhost:8080/api/json/book/1
+	 * 網址:http://localhost:8080/api/json/book/2
+	 */
+	@GetMapping(value = "/json/book/{id}")
+	public ResponseEntity<ApiResponse<Book>> getBookInfo3(@PathVariable Integer id){
+		//書庫
+		List<Book> books=List.of(
+				new Book(1,"小叮噹",12.5,20,true),
+				new Book(2,"老夫子",10.5,30,true),
+				new Book(3,"好小子",9.5,40,true),
+				new Book(4,"新樂園",14.5,50,false));
+		//根據id搜尋該筆書籍
+		Optional<Book> optBook=books.stream().filter(book->book.getId().equals(id)).findFirst();
+		//判斷是否有找到
+		if(optBook.isEmpty()) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail("查無此書"));
+		}
+		Book book=optBook.get();//取得書籍物件
+		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));
 	}
 
 }
