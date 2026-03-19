@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.BMI;
+import com.example.demo.model.Book;
 import com.example.demo.response.ApiResponse;
 //可以省去撰寫@ResponseBody
 @RestController
@@ -138,13 +140,20 @@ public class ApiController {
 	 * 讓參數自動轉成key/value的Map集合
 	 */
 	@GetMapping(value="/json/book1")
-	public ResponseEntity<ApiResponse<Object>> getBookInfo(@RequestParam Map<String,Object> bookMap){
+	public ResponseEntity<ApiResponse<Object>> getBookInfo1(@RequestParam Map<String,Object> bookMap){
 		System.out.printf("bookMap=%s%n",bookMap);
 		return ResponseEntity.ok(ApiResponse.success("成功", bookMap));
 	}
 	/**
-	 * 多筆參數轉model
+	 * 9.多筆參數轉model
 	 * 路徑:/json/book2?name=Math&price=12.5&amount=10&pub=true
+	 * 網址:http://localhost:8080/api/json/book2?name=Math&price=12.5&amount=10&pub=true
 	 */
+	@GetMapping(value ="/json/book2")
+	public ResponseEntity<ApiResponse<Book>> getBookInfo2(Book book){
+		book.setId(1);
+		System.out.printf("bookMap=%s%n",book);
+		return ResponseEntity.ok(ApiResponse.success("成功", book));
+	}
 
 }
