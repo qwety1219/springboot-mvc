@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService{
 
 	@Override
 	public void updateBook(Integer id, Book book) throws BookException {
-		if(!bookRepository.addBook(book)) {
+		if(!bookRepository.updateBook(id,book)) {
 			throw new BookException("修改失敗,id:"+id+","+book);
 		}
 	}

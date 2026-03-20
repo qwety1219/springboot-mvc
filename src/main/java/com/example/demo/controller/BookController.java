@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -140,5 +142,27 @@ public class BookController {
 		}
 	}
 	//PUT:/book/{id}更新整本書(完整更新)
+	@PutMapping("/{id}")
+	public ResponseEntity<ApiResponse<Book>> updateBook(@PathVariable Integer id,@RequestBody Book book){
+		try {
+			bookService.updateBook(id,book);//修改
+			book=bookService.getBookById(id);//重查該筆
+			return ResponseEntity.ok(ApiResponse.success("修改成功", book));
+		}catch(BookException e) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
+		}
+	}
+	//PATCH:/book/{id}部分更新(name + price)
+	@PatchMapping("/{id}")
+	public ResponseEntity<ApiResponse<Book>> updateNameAndPrice(@PathVariable Integer id,@RequestBody Book book){
+		try {
+			bookService.updateBookNameAndPrice(id, book.getName(), book.getPrice());
+			return ResponseEntity.ok(ApiResponse.success("修改書名與價格成功", book));
+		}catch(BookException e) {
+			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
+		}
+		
+		
+	}
 
 }
