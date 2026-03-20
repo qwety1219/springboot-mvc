@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exception.BookException;
 import com.example.demo.model.Book;
 import com.example.demo.response.ApiResponse;
 import com.example.demo.service.BookService;
@@ -114,74 +113,46 @@ public class BookController {
 	//GET:/book/{id}查詢單一書籍
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<Book>> getBookId(@PathVariable Integer id){
-		try {
-			Book book=bookService.getBookById(id);
-			return ResponseEntity.ok(ApiResponse.success("查詢成功", book));
-		}catch(BookException e) {
-			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
-		}
+		Book book=bookService.getBookById(id);
+		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));
 	}
 	//POST:/book新增書籍
 	@PostMapping
 	public ResponseEntity<ApiResponse<Book>> addBook(@RequestBody Book book){
-		try {
-			bookService.addBook(book);
-			return ResponseEntity.ok(ApiResponse.success("新增成功", book));
-		}catch(BookException e) {
-			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
-		}
+		bookService.addBook(book);
+		return ResponseEntity.ok(ApiResponse.success("新增成功", book));
 	}
 	//DELETE:/book/{id}刪除書籍
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<String>> deletBook(@PathVariable Integer id){
-		try {
-			bookService.deleteBook(id);
-			return ResponseEntity.ok(ApiResponse.success("刪除成功", "id"+id));
-		}catch(BookException e) {
-			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
-		}
+		bookService.deleteBook(id);
+		return ResponseEntity.ok(ApiResponse.success("刪除成功", "id"+id));
 	}
 	//PUT:/book/{id}更新整本書(完整更新)
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<Book>> updateBook(@PathVariable Integer id,@RequestBody Book book){
-		try {
-			bookService.updateBook(id,book);//修改
-			book=bookService.getBookById(id);//重查該筆
-			return ResponseEntity.ok(ApiResponse.success("修改成功", book));
-		}catch(BookException e) {
-			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
-		}
+		bookService.updateBook(id,book);//修改
+		book=bookService.getBookById(id);//重查該筆
+		return ResponseEntity.ok(ApiResponse.success("修改成功", book));
 	}
 	//PATCH:/book/{id}部分更新(name + price)
 	@PatchMapping("/{id}")
 	public ResponseEntity<ApiResponse<Book>> updateNameAndPrice(@PathVariable Integer id,@RequestBody Book book){
-		try {
-			bookService.updateBookNameAndPrice(id, book.getName(), book.getPrice());
-			return ResponseEntity.ok(ApiResponse.success("修改書名與價格成功", book));
-		}catch(BookException e) {
-			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
-		}
+		bookService.updateBookNameAndPrice(id, book.getName(), book.getPrice());
+		return ResponseEntity.ok(ApiResponse.success("修改書名與價格成功", book));
 	}
 	//Lab練習
 	//PATCH:/book/name/{id}只改名稱
 	@PatchMapping("/name/{id}")
 	public ResponseEntity<ApiResponse<Book>> updateName(@PathVariable Integer id,@RequestBody Book book){
-		try {
-			bookService.updateBookName(id, book.getName());
-			return ResponseEntity.ok(ApiResponse.success("修改書名成功", book));
-		}catch(BookException e) {
-			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
-		}
+		bookService.updateBookName(id, book.getName());
+		return ResponseEntity.ok(ApiResponse.success("修改書名成功", book));
 	}
 	//PATCH:/book/price/{id}只改價格
 	@PatchMapping("/price/{id}")
 	public ResponseEntity<ApiResponse<Book>> updatePrice(@PathVariable Integer id,@RequestBody Book book){
-		try {
-			bookService.updateBookPrice(id, book.getPrice());
-			return ResponseEntity.ok(ApiResponse.success("修改價格成功", book));
-		}catch(BookException e) {
-			return ResponseEntity.badRequest().body(ApiResponse.fail(e.getMessage()));
-		}
+		bookService.updateBookPrice(id, book.getPrice());
+		return ResponseEntity.ok(ApiResponse.success("修改價格成功", book));
 	}
 
 }
