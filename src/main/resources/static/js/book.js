@@ -59,15 +59,19 @@ async function findBookById(){
 		showMessage(error.message,"error");
 	}
 }
+//表單新增的資料
+function getBookFormDataForCreate(){
+	return {
+		name:bookName.value.trim(),
+		price:bookPrice.value?Number(bookPrice.value):null,
+		amount:bookAmount.value?Number(bookAmount.value):null,
+		pub:bookPub.checked
+	};
+}
 //新增書籍
 async function addBook(){
 	try{
-		const book={
-			name:bookName.value.trim(),
-			price:bookPrice.value?Number(bookPrice.value):null,
-			amount:bookAmount.value?Number(bookAmount.value):null,
-			pub:bookPub.checked
-		};
+		const book=getBookFormDataForCreate();
 		if(!book.name||book.price===null||book.amount===null){
 			showMessage("請輸入完整書名,價格,數量","error");
 			return;
