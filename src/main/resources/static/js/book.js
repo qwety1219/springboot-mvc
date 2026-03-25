@@ -115,7 +115,7 @@ function renderBookTable(books){
 		html+=`
 			<tr>
 				<td>${book.id}</td>
-				<td>${book.name}</td>
+				<td>${escapeHtml(book.name)}</td>
 				<td>${book.price}</td>
 				<td>${book.amount}</td>
 				<td>${book.pub?"有":"無"}</td>
@@ -125,6 +125,7 @@ function renderBookTable(books){
 	bookTableBody.innerHTML=html;
 	
 }
+//避免文字直接塞進html
 function escapeHtml(text){
 	if(text===null||text===undefined){
 		return "";
