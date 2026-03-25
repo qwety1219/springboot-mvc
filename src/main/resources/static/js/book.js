@@ -82,7 +82,8 @@ async function addBook(){
 		const result=await handleResponse(response);
 		console.log(result);
 		showMessage(result.message||"新增成功","success");
-		bookForm.reset();
+		bookForm.reset();//清空表單
+		findAllBooks();//重新查詢所有書籍
 	}catch(error){
 		showMessage(error.message||"error");
 	}
