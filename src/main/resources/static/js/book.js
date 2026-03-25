@@ -33,7 +33,22 @@ async function handleResponse(response){
 
 //查詢單筆
 async function findBookById(){
-	
+	try{
+		const id=searchId.value;
+		if(!id){
+			showMessage("請輸入要查詢的書籍ID","error");
+			return;
+		}
+		const response=await fetch(`${API_BASE_URL}/${id}`);
+		const result=await handleResponse(response);
+		console.log(result)//debug用,顯示json物件
+		console.log(JSON.stringify(result));//debug用,顯示json字串
+		singleResult.textContent=JSON.stringify(result);
+		showMessage(result.message||"單筆查詢成功","success");
+	}catch(error){
+		singleResult.textContent="查詢失敗";
+		showMessage(error.message,"error");
+	}
 }
 //查詢全部
 async function findAllBooks(){
@@ -65,7 +80,7 @@ function renderBookTable(books){
 				<td>${book.name}</td>
 				<td>${book.price}</td>
 				<td>${book.amount}</td>
-				<td>${book.pub}</td>
+				<td>${book.pub?"有":"無"}</td>
 			</tr>
 		`;
 	});
