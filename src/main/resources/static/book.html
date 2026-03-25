@@ -17,7 +17,34 @@
 				<div class="search-bar">
 					<input type="number" id="searchId" placeholder="輸入要查詢的書籍ID"/>
 					<button type="button" id="findOneBtn">查詢單筆</button>
-					<button type="button" id="findAllBtn">查詢多筆</button>
+					<button type="button" id="findAllBtn">查詢全部</button>
+				</div>
+			</section>
+			<!-- 單筆查詢結果 -->
+			<section class="card">
+				<h2>單筆查詢結果(以json呈現))</h2>
+				<pre id="singleResult" class="result-box">尚未查詢資料</pre>
+			</section>
+			<!-- 全部查詢結果(以table呈現) -->
+			<section class="card">
+				<h2>全部書籍列表</h2>
+				<div class="table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>書名</th>
+								<th>價格</th>
+								<th>數量</th>
+								<th>出刊</th>
+							</tr>
+						</thead>
+						<tbody id="bookTableBody">
+							<tr>
+								<td colspan="5" class="empty-now">目前沒有資料</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</section>
 		</div>
