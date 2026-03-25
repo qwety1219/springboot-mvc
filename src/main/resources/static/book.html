@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>Book SPA</title>
+		<link rel="stylesheet" href="/css/book.css">
+	</head>
+	<body>
+		<div class="container">
+			<h1>Book管理系統SPA(Single Page Application)</h1>
+			<p class="subtitle"></p>
+			<!-- 顯示訊息的空間 -->
+			<div id="messageBox" class="message-box info">顯示訊息...</div>
+			<!-- 查詢功能 -->
+			<section class="card">
+				<h2>查詢功能</h2>
+				<div class="search-bar">
+					<input type="number" id="searchId" placeholder="輸入要查詢的書籍ID"/>
+					<button type="button" id="findOneBtn">查詢單筆</button>
+					<button type="button" id="findAllBtn">查詢多筆</button>
+				</div>
+			</section>
+		</div>
+	</body>
 </html>
