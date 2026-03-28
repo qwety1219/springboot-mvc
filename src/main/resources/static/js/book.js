@@ -161,6 +161,19 @@ async function findAllBooks(){
 		showMessage(error.message||"error");
 	}
 }
+//由表格載入資料到表單
+async function loadBookById(id){
+	try{
+		const response=await fetch(`${API_BASE_URL}/${id}`);
+		const result=await handleResponse(response);
+		singleResult.textContent=JSON.stringify(result);
+		showMessage(`已載入書籍ID:${id}`,"success");
+		fillForm(result.data);
+	}catch(error){
+		singleResult.textContent=`載入書籍ID:${id}失敗`;
+		showMessage(error.message,"error");
+	}
+}
 //渲染表格
 function renderBookTable(books){
 	if(!books||books.length===0){
@@ -175,7 +188,7 @@ function renderBookTable(books){
 	books.forEach(book=>{
 		html+=`
 			<tr>
-				<td>${book.id}</td>
+				<td onclick="loadBookById(${book.id})" style="cursor:pointer" title="按我一下即可修改資料">${book.id}</td>
 				<td>${escapeHtml(book.name)}</td>
 				<td>${book.price}</td>
 				<td>${book.amount}</td>
