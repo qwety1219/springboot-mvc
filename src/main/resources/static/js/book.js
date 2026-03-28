@@ -174,12 +174,31 @@ async function loadBookById(id){
 		showMessage(error.message,"error");
 	}
 }
+//刪除編輯
+async function deleteBookById(id){
+	const isConFirmed=confirm(`你確定要刪除書籍ID:${id}嗎?`);
+	if(!isConFirmed){
+		showMessage(`已取消刪除書籍ID:${id}`,"info");
+		return;
+	}
+	try{
+		const response=await fetch(`${API_BASE_URL}/${id}`,{
+			method:"DELETE"
+		});
+		const result=await handleResponse(response);
+		showMessage(result.message||"刪除成功","success");
+		findAllBooks();
+	}catch(error){
+		singleResult.textContent=`載入書籍ID:${id}失敗`;
+		showMessage(error.message,"error");
+	}
+}
 //渲染表格
 function renderBookTable(books){
 	if(!books||books.length===0){
 		bookTableBody.innerHTML=`
 			<tr>
-				<td colspan="5" class="empty-now">目前沒有資料</td>
+				<td colspan="6" class="empty-now">目前沒有資料</td>
 			</tr>
 		`;
 		return;
@@ -193,6 +212,10 @@ function renderBookTable(books){
 				<td>${book.price}</td>
 				<td>${book.amount}</td>
 				<td>${book.pub?"有":"無"}</td>
+				<td>
+					<button onclick="loadBookById(${book.id})">修改</button>
+					<button onclick="deleteBookById(${book.id})" class="danger">刪除</button>
+				</td>
 			</tr>
 		`;
 	});
