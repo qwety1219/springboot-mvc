@@ -64,10 +64,19 @@ async function findBookById(){
 		console.log(JSON.stringify(result));//debug用,顯示json字串
 		singleResult.textContent=JSON.stringify(result);
 		showMessage(result.message||"單筆查詢成功","success");
+		fillForm(result.data);//將查到後的資料帶回表單
 	}catch(error){
 		singleResult.textContent="查詢失敗";
 		showMessage(error.message,"error");
 	}
+}
+//將資料帶回表單
+function fillForm(book){
+	bookId.value=book.id??"";
+	bookName.value=book.name??"";
+	bookPrice.value=book.price??"";
+	bookAmount.value=book.amount??"";
+	bookPub.checked=book.pub??false;
 }
 //表單新增的資料
 function getBookFormDataForCreate(){
