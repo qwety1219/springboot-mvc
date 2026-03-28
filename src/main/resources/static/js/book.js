@@ -17,15 +17,25 @@ const bookTableBody=document.getElementById("bookTableBody");
 //抓取畫面元素(id)-新增表單相關
 const bookForm=document.getElementById("bookForm");
 const bookName=document.getElementById("bookName");
+const bookId=document.getElementById("bookId");
 const bookPrice=document.getElementById("bookPrice");
 const bookAmount=document.getElementById("bookAmount");
 const bookPub=document.getElementById("bookPub");
 const addBtn=document.getElementById("addBtn");
+const updateBtn=document.getElementById("updateBtn");
 const resetBtn=document.getElementById("resetBtn");
+/**
+ * 紀錄目前表單模式
+ * create=新增模式
+ * update=修改模式
+ */
+let formMode="create";
+
 //綁定查詢按鈕事件
 findOneBth.addEventListener("click",findBookById);
 findAllBth.addEventListener("click",findAllBooks);
 addBtn.addEventListener("click",addBook);
+updateBtn.addEventListener("click",updateBook);
 //顯示訊息
 function showMessage(message,type="info"){
 	messageBox.textContent=message;
@@ -68,6 +78,16 @@ function getBookFormDataForCreate(){
 		pub:bookPub.checked
 	};
 }
+//表單修改的資料
+function getBookFormDataForUpdate(){
+	return {
+		id:bookId.value?Number(bookId.value):null,	
+		name:bookName.value.trim(),
+		price:bookPrice.value?Number(bookPrice.value):null,
+		amount:bookAmount.value?Number(bookAmount.value):null,
+		pub:bookPub.checked
+		};
+}
 //新增書籍
 async function addBook(){
 	try{
@@ -90,6 +110,34 @@ async function addBook(){
 		findAllBooks();//重新查詢所有書籍
 	}catch(error){
 		showMessage(error.message||"error");
+	}
+}
+//修改書籍
+async function updateBook(){
+	try{
+		const book=getBookFormDataForUpdate();
+		if(!book.id){
+			showMessage("修改時必須要有ID","error");
+			return;
+		}
+		
+		if(!book.name||book.price===null||book.amount===null){
+			showMessage("請輸入完整的書名,價格,數量","error");
+			return;
+		}
+		const response=await fetch(`${API_BASE_URL}/${book.id}`,{
+			method:"PUT",
+			headers:{
+				"Content-Type":"application/json"
+			},
+			body:JSON.stringify(book)
+		});
+		const result=await handleResponse(response);
+		showMessage(result.message||"修改成功","success");
+		singleResult.textContent=JSON.stringify(result.data);
+		findAllBooks();
+	} catch(error){
+		showMessage(error.message,"error");
 	}
 }
 //查詢全部
@@ -135,9 +183,9 @@ function escapeHtml(text){
 		return "";
 	}
 	return String(text)
-		.replaceAll("&","&amp")
-		.replaceAll("<","&lt")
-		.replaceAll(">","&gt")
-		.replaceAll('"',"&quot")
-		.replaceAll("'","&#39")
+		.replaceAll("&","&amp;")
+		.replaceAll("<","&lt;")
+		.replaceAll(">","&gt;")
+		.replaceAll('"',"&quot;")
+		.replaceAll("'","&#39;")
 }

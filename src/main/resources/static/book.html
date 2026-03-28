@@ -11,10 +11,15 @@
 			<p class="subtitle"></p>
 			<!-- 顯示訊息的空間 -->
 			<div id="messageBox" class="message-box info">顯示訊息...</div>
-			<!-- 新增表單 -->
+			<!-- 書籍表單 -->
 			<section class="card">
-				<h2>新增書籍</h2>
+				<h2>書籍表單</h2>
 				<form id="bookForm">
+					<!-- 修改時,才會使用的ID欄位 -->
+					<div class="form-row">
+						<label for="bookId">ID</label>
+						<input type="number" id="bookId" placeholder="修改時會自動帶入"/>
+					</div>
 					<div class="form-row">
 						<label for="bookName">書名</label>
 						<input type="text" id="bookName" placeholder="例如:Java入門"/>
@@ -33,6 +38,7 @@
 					</div>
 					<div class="button-group">
 						<button type="button" id="addBtn">新增書籍</button>
+						<button type="button" id="updateBtn">修改書籍</button>
 						<button type="reset" id="resetBtn" class="secondary">清空表單</button>
 					</div>
 				</form>
