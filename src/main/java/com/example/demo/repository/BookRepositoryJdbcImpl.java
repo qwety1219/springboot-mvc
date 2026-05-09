@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.example.demo.model.Book;
@@ -16,8 +17,8 @@ public class BookRepositoryJdbcImpl implements BookRepository{
 	@Override
 	public List<Book> findAllBooks() {
 		String sql="select id,name,price,amount,pub from book";
-		//利用BeanPropertyRowMapper(Book.java)會自動將資料表中查詢到的每一筆紀錄注入到Book物件中
-		return null;
+		//利用BeanPropertyRowMapper(Book.class)會自動將資料表中查詢到的每一筆紀錄注入到Book物件中
+		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Book.class));
 	}
 
 	@Override
