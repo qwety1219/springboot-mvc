@@ -15,7 +15,8 @@ import com.example.demo.repository.BookRepository;
 public class BookServiceImpl implements BookService{
 
 	@Autowired//自動綁定
-	@Qualifier("bookRepositoryImpl")//指定實現類
+//	@Qualifier("bookRepositoryImpl")//指定實現類
+	@Qualifier("bookRepositoryJdbcImpl")//指定實現類
 	private BookRepository bookRepository;
 	@Override
 	public List<Book> findAllBooks() {

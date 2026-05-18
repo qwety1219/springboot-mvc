@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,7 +28,7 @@ public class BookRepositoryJdbcImpl implements BookRepository{
 		String sql="select id,name,price,amount,pub from book where id=?";
 		//查詢單筆,若沒查到會拋出EmptyResultDataAccessException
 		try {
-			Book book=jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Book.class));
+			Book book=jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Book.class),id);
 			return Optional.of(book);
 		}catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
@@ -36,20 +37,37 @@ public class BookRepositoryJdbcImpl implements BookRepository{
 
 	@Override
 	public boolean addBook(Book book) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql="insert into book(name,price,amount,pub) values(?,?,?,?)";
+		try {
+			int rows=jdbcTemplate.update(sql,book.getName(),book.getPrice(),book.getAmount(),book.getPub());
+			return rows>0;
+		}catch (DuplicateKeyException e) {
+			return false;
+		}
+		
+		
 	}
 
 	@Override
 	public boolean updateBook(Integer id, Book book) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql="update book set name=?,price=?,amount=?,pub=? where id=?";
+		try {
+			int rows=jdbcTemplate.update(sql,book.getName(),book.getPrice(),book.getAmount(),book.getPub(),id);
+			return rows>0;
+		}catch (DuplicateKeyException e) {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean deleteBook(Integer id) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql="delete from book where id=?";
+		try {
+			int rows=jdbcTemplate.update(sql,id);
+			return rows>0;
+		}catch (DuplicateKeyException e) {
+			return false;
+		}
 	}
 	
 }
