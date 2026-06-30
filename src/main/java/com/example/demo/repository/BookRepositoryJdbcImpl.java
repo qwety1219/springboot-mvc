@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +41,7 @@ public class BookRepositoryJdbcImpl implements BookRepository{
 		try {
 			int rows=jdbcTemplate.update(sql,book.getName(),book.getPrice(),book.getAmount(),book.getPub());
 			return rows>0;
-		}catch (DuplicateKeyException e) {
+		}catch (DataAccessException e) {
 			return false;
 		}
 		
@@ -54,7 +54,7 @@ public class BookRepositoryJdbcImpl implements BookRepository{
 		try {
 			int rows=jdbcTemplate.update(sql,book.getName(),book.getPrice(),book.getAmount(),book.getPub(),id);
 			return rows>0;
-		}catch (DuplicateKeyException e) {
+		}catch (DataAccessException e) {
 			return false;
 		}
 	}
@@ -65,7 +65,7 @@ public class BookRepositoryJdbcImpl implements BookRepository{
 		try {
 			int rows=jdbcTemplate.update(sql,id);
 			return rows>0;
-		}catch (DuplicateKeyException e) {
+		}catch (DataAccessException e) {
 			return false;
 		}
 	}

@@ -34,16 +34,13 @@ public class BookServiceImpl implements BookService{
 
 	@Override
 	public void addBook(Book book) throws BookException {
-		if(!bookRepository.addBook(book)) {
+//		throw new BookException("這是故意測試的錯誤訊息！");
 			throw new BookException("新增失敗,"+book);
-		}
 	}
 
 	@Override
 	public void updateBook(Integer id, Book book) throws BookException {
-		if(!bookRepository.updateBook(id,book)) {
 			throw new BookException("修改失敗,id:"+id+","+book);
-		}
 	}
 
 	@Override
